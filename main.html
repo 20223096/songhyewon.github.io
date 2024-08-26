@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>main</title>
+        <style>
+            h1 {
+                margin-top : 100px;
+                text-align : center;
+            }
+            .hello {
+                text-align : center;
+            }
+            .portpolio {
+                width : 300px;
+                height : 300px;
+            }
+            .img_title {
+                margin-left : 100px;
+            }
+            .img_button {
+                text-align : center;
+                margin-left : 110px;
+            }
+            .card1 {
+                margin-left : 300px;
+            }
+            .card2 {
+                margin-left : 150px;
+            }
+            .card3 {
+                margin-right : 250px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>송혜원의 포트폴리오</h1>
+        <div class="hello">안녕하세요.<br>
+            늘 고민하는 개발자 송혜원입니다.<br>
+            제 취미를 소개합니다.<br>
+            <br>
+            <br>
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr;">
+            <div class="card1">
+                <img class="portpolio" src="./img/signing.jpg">
+                <p class="img_title">노래 부르기</p>
+                <input class="img_button" type="button" value="자세히 보기" onclick="alert(1);">
+            </div>
+            <div class="card2">
+                <img class="portpolio" src="./img/eating.jpg">
+                <p class="img_title">맛있는 음식 먹기</p>
+                <input class="img_button" type="button" value="자세히 보기" onclick="alert(2);">
+            </div>
+            <div class="card3">
+                <img class="portpolio" src="./img/dancing.jpg">
+                <p class="img_title">춤 추기</p>
+                <input class="img_button" type="button" value="자세히 보기" onclick="alert(3);">
+            </div>
+        </div>
+    </body>
+</html>
