@@ -1,14 +1,12 @@
 const conn = require('../mariadb');
 const {StatusCodes} = require('http-status-codes');
-const router = express.Router()
-const express = require('express')
 // {카테고리 별, 신간 여부} 전체 도서 목록 조회
 const allBooks = (req, res) => {
     let {category_id, news, currentPage, limit} = req.query
     //limit : 페이지 당 도서 수
     //currentPage : 현재 몇 페이지인지
     let offset = limit * (currentPage - 1)
-    let sql = `SELECT * FROM books`
+    let sql = `SELECT *, (SELECT count (*) FROM likes WHERE books.id=liked_book_id) AS likes FROM books`
     let values = []
     //offset과 limit은 문자면 오류가 남 숫자로 바꿔줘야함
     if (category_id && news) {
@@ -41,9 +39,17 @@ const allBooks = (req, res) => {
 const bookDetail = (req, res) => {
     var {id} = req.params //req.params가 json형태이기 때문에 비구조화로 왼쪽에 값이 들어갈 수 있음 근데
     //var {id} = parseInt(req.params) 이렇게 한 줄로 줄여버리면 들어갈 수가 없음 req.params가 json이 아니게 되기 때문에
+    let {user_id} = req.body
     id = parseInt(id)
-    let sql = `SELECT * FROM books LEFT JOIN category ON books.category_id = category.id WHERE books.id = ?`
-    conn.query(sql, id, (err, results) => {
+    let sql = `SELECT * 
+    (SELECT count( *) FROM likes WHERE liked_book_id = books.id) AS likes, 
+    (SELECT EXISTS (SELECT * FROM likes WHERE user_id=? AND liked_book_id=?)) AS liked 
+    FROM books
+    LEFT JOIN category
+    ON books.category_id = category_id
+    WHERE books.id=?`
+    let values = [user_id, , id, id]
+    conn.query(sql, values, (err, results) => {
         if (err) {
             return res.status(StatusCodes.BAD_REQUEST).end()
         }
@@ -56,4 +62,4 @@ const bookDetail = (req, res) => {
     })
 }
 
-module.exports = {bookDetail, booksByCategory, allBooks}
+module.exports = {bookDetail, allBooks}
